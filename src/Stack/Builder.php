@@ -47,8 +47,9 @@ class Builder
             } else {
                 $kernelClass = $firstArg;
                 array_unshift($args, $app);
-
-                $app = ( new \ReflectionClass($kernelClass) )->newInstanceArgs($args);
+                
+                $reflection = new \ReflectionClass($kernelClass);
+                $app = $reflection->newInstanceArgs($args);
             }
 
             array_unshift($middlewares, $app);
