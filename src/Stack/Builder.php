@@ -19,8 +19,7 @@ class Builder
             throw new \InvalidArgumentException("Missing argument(s) when calling unshift");
         }
 
-        $spec = func_get_args();
-        $this->specs->unshift($spec);
+        $this->specs->unshift( func_get_args() );
 
         return $this;
     }
@@ -31,8 +30,7 @@ class Builder
             throw new \InvalidArgumentException("Missing argument(s) when calling push");
         }
 
-        $spec = func_get_args();
-        $this->specs->push($spec);
+        $this->specs->push( func_get_args() );
 
         return $this;
     }
@@ -41,8 +39,7 @@ class Builder
     {
         $middlewares = array($app);
 
-        foreach ($this->specs as $spec) {
-            $args = $spec;
+        foreach ($this->specs as $args) {
             $firstArg = array_shift($args);
 
             if (is_callable($firstArg)) {
@@ -51,8 +48,7 @@ class Builder
                 $kernelClass = $firstArg;
                 array_unshift($args, $app);
 
-                $reflection = new \ReflectionClass($kernelClass);
-                $app = $reflection->newInstanceArgs($args);
+                $app = ( new \ReflectionClass($kernelClass) )->newInstanceArgs($args);
             }
 
             array_unshift($middlewares, $app);
